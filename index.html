@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <style>
+      #timer {
+        font-size: 76px;
+        text-align: center;
+        
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 36px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+ 
+  <body>
+  <center>
+    <h2>Alarme Pomodoro</h2>
+    <div id="timer"></div>
+    <button id="start">Iniciar</button>
+    <button id="pause">Pausar</button>
+    <button id="reset">Reiniciar</button>
+    <audio id="player">
+    <source src="Kalimba.mp3" type="audio/mpeg">
+    </audio>
+        <script>
+    
+
+      var timer = document.getElementById("timer");
+      var start = document.getElementById("start");
+      var pause = document.getElementById("pause");
+      var reset = document.getElementById("reset");
+      <!-- var tempo = input("informe o tempo:") -->
+
+      var seconds = 1500; // 25 minutes
+      var running = false;
+      var intervalId;
+
+      function displayTime() {
+        var minutes = Math.floor(seconds / 60);
+        var remainingSeconds = seconds % 60;
+        if (remainingSeconds < 10) {
+          remainingSeconds = "0" + remainingSeconds;
+        }
+        timer.innerHTML = minutes + ":" + remainingSeconds;
+      }
+
+      function startTimer() {
+        if (!running) {
+          running = true;
+          intervalId = setInterval(function() {
+            seconds--;
+            if (seconds === 0) {
+              clearInterval(intervalId);
+              running = false;
+              <!-- alert("Pomodoro completo!"); -->
+              var player = document.getElementById("player");
+              player.play();
+
+            }
+            displayTime();
+          }, 1000);
+        }
+      }
+
+      function pauseTimer() {
+        if (running) {
+          clearInterval(intervalId);
+          running = false;
+          player.pause()
+        }
+      }
+
+      function resetTimer() {
+        clearInterval(intervalId);
+        running = false;
+        seconds = 1500;
+        displayTime();
+        player.pause();
+        player.currentTime=0;
+      }
+
+      start.addEventListener("click", startTimer);
+      pause.addEventListener("click", pauseTimer);
+      reset.addEventListener("click", resetTimer);
+
+      displayTime();
+    </script>
+    </center>
+   </body>
+   
+</html>
